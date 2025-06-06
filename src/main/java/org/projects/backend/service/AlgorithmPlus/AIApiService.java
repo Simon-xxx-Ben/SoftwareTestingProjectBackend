@@ -1,6 +1,6 @@
 package org.projects.backend.service.AlgorithmPlus;
 
 public interface AIApiService {
-    String updateChapterDegree();
+    boolean updateChapterDegree();
     String getWrongQuestionsByQuestionIdThroughAI(Integer questionId);
 }
