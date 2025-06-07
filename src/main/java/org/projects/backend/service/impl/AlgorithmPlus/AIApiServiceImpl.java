@@ -92,13 +92,70 @@ public class AIApiServiceImpl implements AIApiService {
             String[] parts = inner.split("\\s*,\\s*");  // 逗号分隔，自动忽略空格
 
             for (String part : parts) {
-                result.add(Integer.parseInt(part));
+                try {
+                    result.add(Integer.parseInt(part));
+                } catch (Exception e) {
+                    System.out.println("存在非Integer数据，返回空List。");
+                    return (new ArrayList<>()).toString();
+                }
             }
             System.out.println("提取到的 List<Integer>: " + result);
             return result.toString();
         } else {
             System.out.println("未找到任何符合格式的列表。");
             return (new ArrayList<>()).toString();
+        }
+    }
+
+    @Override
+    public String getChartOfGrowingCapacityThroughAI() {
+        String url = "http://localhost:8081/ai/bailian/agent/call?message=绘制能力成长曲线";
+
+        // 发送 GET 请求（其他方法：postForObject, exchange 等）
+        String result_url = restTemplate.getForObject(url, String.class);
+
+        if (result_url == null || result_url.isEmpty()) {
+            return "";
+        }
+
+        // 正则表达式：匹配 ![](https://mdn.alipayobjects.com/...)
+        String regex = "!\\[]\\((https://mdn\\.alipayobjects\\.com/[^)]+)\\)";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(result_url);
+
+        if (matcher.find()) {
+            String reslut = matcher.group(1);  // 提取括号中的链接
+            System.out.println("提取的链接是: " + reslut);
+            return reslut;
+        } else {
+            System.out.println("未找到匹配的链接。");
+            return "";
+        }
+    }
+
+    @Override
+    public String getChartOfMasteryDegreeThroughAI() {
+        String url = "http://localhost:8081/ai/bailian/agent/call?message=请绘制一份知识点掌握程度柱状图";
+
+        // 发送 GET 请求（其他方法：postForObject, exchange 等）
+        String result_url = restTemplate.getForObject(url, String.class);
+
+        if (result_url == null || result_url.isEmpty()) {
+            return "";
+        }
+
+        // 正则表达式：匹配 ![](https://mdn.alipayobjects.com/...)
+        String regex = "!\\[]\\((https://mdn\\.alipayobjects\\.com/[^)]+)\\)";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(result_url);
+
+        if (matcher.find()) {
+            String reslut = matcher.group(1);  // 提取括号中的链接
+            System.out.println("提取的链接是: " + reslut);
+            return reslut;
+        } else {
+            System.out.println("未找到匹配的链接。");
+            return "";
         }
     }
 }

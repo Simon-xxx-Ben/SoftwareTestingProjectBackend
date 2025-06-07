@@ -20,7 +20,17 @@ public class AIApiController {
     }
 
     @PutMapping("refresh-chapter-degree")
-    public boolean refreshChapterDegress() {
+    public boolean refreshChapterDegree() {
         return apiService.updateChapterDegree();
+    }
+
+    @GetMapping("chart/growing-capacity")
+    public String getChartOfGrowingCapacityThroughAI() {
+        return apiService.getChartOfGrowingCapacityThroughAI();
+    }
+
+    @GetMapping("chart/mastery-degree")
+    public String getChartOfMasteryDegreeThroughAI() {
+        return apiService.getChartOfMasteryDegreeThroughAI();
     }
 }
