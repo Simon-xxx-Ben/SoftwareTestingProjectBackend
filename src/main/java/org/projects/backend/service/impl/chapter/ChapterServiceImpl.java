@@ -52,8 +52,8 @@ public class ChapterServiceImpl implements ChapterService {
             chapter_temp.put("name", chapter.getName());
             chapter_temp.put("questionCount", questionsMapper.selectCount(new QueryWrapper<Questions>().eq("chapter_id", chapter.getId())));
             chapter_temp.put("completedCount", 5);
-            chapter_temp.put("progress", 0.5);
-            chapter_temp.put("degree", chapter.getDegree());
+            chapter_temp.put("progress", chapter.getDegree());
+//            chapter_temp.put("degree", chapter.getDegree());
             chapterList.add(chapter_temp);
         }
         temp1.put("chapters", chapterList);
