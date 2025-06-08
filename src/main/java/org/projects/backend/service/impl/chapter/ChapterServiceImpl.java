@@ -8,6 +8,7 @@ import org.projects.backend.mapper.ChapterMapper;
 import org.projects.backend.mapper.QuestionsMapper;
 import org.projects.backend.pojo.Chapter;
 import org.projects.backend.pojo.Questions;
+import org.projects.backend.service.AlgorithmPlus.AIApiService;
 import org.projects.backend.service.chapter.ChapterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,9 @@ public class ChapterServiceImpl implements ChapterService {
     @Autowired
     QuestionsMapper questionsMapper;
 
+    @Autowired
+    AIApiService aiApiService;
+
     @Override
     public String getAllChapters() {
         List<JSONObject> practice_list = new ArrayList<>();
@@ -34,15 +38,17 @@ public class ChapterServiceImpl implements ChapterService {
         temp1.put("id", 1);
         temp2.put("id", 2);
         temp3.put("id", 3);
-        temp1.put("name", "高等數學");
-        temp2.put("name", "綫性代數");
-        temp3.put("name", "概率論與數理統計");
+        temp1.put("name", "高等数学");
+        temp2.put("name", "线性代数");
+        temp3.put("name", "概率论与数理统计");
         temp1.put("questionCount", "100");
         temp2.put("questionCount", "90");
         temp3.put("questionCount", "80");
-        temp1.put("completedCount", "50");
-        temp2.put("completedCount", "40");
-        temp3.put("completedCount", "30");
+        temp1.put("completedCount", "68");
+        temp2.put("completedCount", "0");
+        temp3.put("completedCount", "0");
+//        刷新章节掌握度
+        aiApiService.updateChapterDegree();
 //        數據庫均爲高等數學，暫不做判斷
         List<Chapter> chapterList_temp = chapterMapper.selectList(null);
         List<JSONObject> chapterList = new ArrayList<>();
