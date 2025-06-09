@@ -53,10 +53,12 @@ public class QuestionController {
     }
 
     @GetMapping("wrong-questions")
-    public String getWrongQuestions(@RequestParam int page, @RequestParam int limit) {
+    public String getWrongQuestions(@RequestParam String page, @RequestParam String limit) {
         Map<String, String> data = new HashMap<>();
-        data.put("pageNo", String.valueOf(page));
-        data.put("pageSize", String.valueOf(limit));
+        data.put("pageNo", page);
+        data.put("pageSize", limit);
+        System.out.println(page);
+        System.out.println(limit);
         return questionsService.getWrongQuestionsList(data);
     }
 

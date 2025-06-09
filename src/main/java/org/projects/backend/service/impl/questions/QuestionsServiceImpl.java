@@ -107,8 +107,7 @@ public class QuestionsServiceImpl implements QuestionsService {
             resp.put("is_successful", false);
             resp.put("error_message", "请保证题目难度hardValue属性为1或2或3！");
             return resp;
-        }
-        QueryWrapper<Questions> queryWrapper = new QueryWrapper<>();
+        }        QueryWrapper<Questions> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("hard_value", Integer.parseInt(data.get("hardValue")))
                 .orderBy(true, true, "RAND()")
                 .last("limit 10");
@@ -148,33 +147,36 @@ public class QuestionsServiceImpl implements QuestionsService {
     @Override
     public String getWrongQuestionsList(Map<String, String> data) {
         JSONObject resp = new JSONObject();
-//        if (!data.containsKey("pageNo")){
-//            resp.put("is_successful", false);
-//            resp.put("error_message", "请保证存在pageNo属性！");
-//            return resp;
-//        }
-//        if (!data.containsKey("pageSize")){
-//            resp.put("is_successful", false);
-//            resp.put("error_message", "请保证存在pageSize属性！");
-//            return resp;
-//        }
-//        Integer pageNo, pageSize;
-//        try {
-//            pageNo = Integer.parseInt(data.get("pageNo"));
-//        } catch (Exception e) {
-//            resp.put("is_successful", false);
-//            resp.put("error_message", "pageNo格式错误，请确保pageNo能够转为Int！");
-//            return resp;
-//        }
-//        try {
-//            pageSize = Integer.parseInt(data.get("pageSize"));
-//        } catch (Exception e) {
-//            resp.put("is_successful", false);
-//            resp.put("error_message", "pageSize格式错误，请确保pageSize能够转为Int！");
-//            return resp;
-//        }
-        Integer pageNo = Integer.parseInt(data.get("pageNo")), pageSize = Integer.parseInt(data.get("pageSize"));
-//        System.out.println(pageNo + " " + pageSize);
+        if (!data.containsKey("pageNo")){
+            resp.put("is_successful", false);
+            resp.put("error_message", "请保证存在pageNo属性！");
+            return JSON.toJSONString(resp);
+        }
+        System.out.println(data.get("pageNo"));
+        if (!data.containsKey("pageSize")){
+            resp.put("is_successful", false);
+            resp.put("error_message", "请保证存在pageSize属性！");
+            return JSON.toJSONString(resp);
+        }
+        System.out.println(data.get("pageSize"));
+        Integer pageNo, pageSize;
+        try {
+            pageNo = Integer.parseInt(data.get("pageNo"));
+        } catch (Exception e) {
+            resp.put("is_successful", false);
+            resp.put("error_message", "pageNo格式错误，请确保pageNo能够转为Int！");
+            return JSON.toJSONString(resp);
+        }
+        try {
+            pageSize = Integer.parseInt(data.get("pageSize"));
+        } catch (Exception e) {
+            resp.put("is_successful", false);
+            resp.put("error_message", "pageSize格式错误，请确保pageSize能够转为Int！");
+            return JSON.toJSONString(resp);
+        }
+//        pageNo = Integer.parseInt(data.get("pageNo"));
+//        pageSize = Integer.parseInt(data.get("pageSize"));
+        System.out.println(pageNo + " " + pageSize);
         IPage<Questions> page = new Page<>(pageNo, pageSize);
         QueryWrapper<Questions> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("is_wrong", 1);

@@ -69,7 +69,15 @@ public class AIApiServiceImpl implements AIApiService {
     }
 
     @Override
-    public String getWrongQuestionsByQuestionIdThroughAI(Integer questionId) {
+    public String getWrongQuestionsByQuestionIdThroughAI(String questionId) {
+
+        if (questionId == null || questionId.isEmpty()) return "";
+
+        try {
+            Integer.parseInt(questionId);
+        } catch (NumberFormatException e) {
+            return "";
+        }
 
         // 目标 API 地址
         String url = "http://localhost:8081/ai/bailian/agent/call?message=请你帮我推荐几道跟id为" + questionId + "的题目类似的题";

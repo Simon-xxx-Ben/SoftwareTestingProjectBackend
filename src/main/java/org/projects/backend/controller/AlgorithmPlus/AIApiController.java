@@ -15,7 +15,7 @@ public class AIApiController {
     AIApiService apiService;
 
     @GetMapping("wrong-questions/ai/{id}")
-    public String getWrongQuestionsByQuestionIdThroughAI(@PathVariable int id) {
+    public String getWrongQuestionsByQuestionIdThroughAI(@PathVariable String id) {
         return apiService.getWrongQuestionsByQuestionIdThroughAI(id);
     }
 
