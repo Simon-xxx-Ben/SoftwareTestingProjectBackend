@@ -136,3 +136,45 @@
 输入参数：无
 
 输出参数：字符串，若正确返回则是以`https://mdn.alipayobjects.com/`开头的字符串，否则为空字符串
+
+### 获取下一个练习题目
+
+函数位置【`service.impl.AlgorithmPro.AdaptivePracticeServiceImpl.getNextPractice()`】
+
+算法功能流程：
+
+1. 分支一：刚点击进入章节的练习题
+
+   输入参数：章节ID`int chap_id`
+
+   输出结果：该章节中，数据库中`chapter.practice_hard_value`字段所表难度值的随机一道题目，并以序列化的字符串返回，如`JSON.toJSONString(resp);`
+
+2. 分支二：在章节练习题中点击下一个题目
+
+   输入参数：章节ID`String chapterId`、我的答案`String answer`、问题ID`String questionId`、是否正确`String isCorrect`
+
+   算法内部处理（仅便于理解，不必测试）：根据`questionId`更新我的答案`answer`、是否正确`isCorrect`以及数据库`chapter.practice_hard_value`字段的难度值
+
+   输出结果：
+   ①若仍有可推荐的题目，则返回该章节在数据库中`chapter.practice_hard_value`字段所表难度值的随机一道题目，且之前推荐过的题目不会再推荐，并以序列化的字符串返回，如`JSON.toJSONString(resp);`
+   ②若不再有题目，返回空列表
+
+本算法是循环进入的，先进分支一，然后循环进入分支二，直至返回值为空列表时退出
+
+①当我的答案`String answer`、问题ID`int questionId`、是否正确`isCorrect`三个参数不全时，默认认为为首次点击，则进入分支一，代码会自动清空已过链表
+②当四个参数全部齐全时，再进入分支二
+
+因此，测试的第一个步骤应仅提供章节ID，后续步骤可灵活处理
+
+> 【用例编写参考】
+>
+> 已完成的异常数据捕捉：
+>
+> 1. 不存在chapterId参数
+> 2. 数据库中不存在chapterId这个数据项（目前仅有jx, wf, jf三个章节）
+> 3. questionId不可转为Int（字符（串）、double类型）
+>
+> 另外两个参数
+>
+> 1. data中isCorrect的取值若为1或true，则变量isCorrect为true，否则为false
+> 2. answer为纯String，无需异常捕捉，也无需测试

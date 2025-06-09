@@ -83,6 +83,11 @@ public class ExamsServiceImpl implements ExamsService {
             resp.put("error_message", "score格式错误，请确保score能够转为Double！");
             return resp;
         }
+        if (score > 100 || score < 0){
+            resp.put("is_successful", false);
+            resp.put("error_message", "成绩应在0-100之间！");
+            return resp;
+        }
         if (examsMapper.selectById(id) == null) {
             resp.put("is_successful", false);
             resp.put("error_message", "没有找到该id！");

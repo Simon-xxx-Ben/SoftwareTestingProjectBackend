@@ -37,17 +37,10 @@ public class AdaptivePracticeServiceImpl implements AdaptivePracticeService {
 
     @Override
     public Object getNextPractice(Map<String, String> data, List<Integer> practicedQuestionsIdList) {
-
-        System.out.print("当前已过的练习题目链表：");
-        for (Integer questionId : practicedQuestionsIdList) {
-            System.out.print(questionId + " ");
-        }
-        System.out.println();
-
         JSONObject resp = new JSONObject();
         if (!data.containsKey("chapterId")) {
             resp.put("is_successful", false);
-            resp.put("error_message", "请保证存在题目难度hardValue属性！");
+            resp.put("error_message", "请保证存在章节ID chapterId属性！");
             return JSON.toJSONString(resp);
         }
         String chapterId = data.get("chapterId");
@@ -63,12 +56,13 @@ public class AdaptivePracticeServiceImpl implements AdaptivePracticeService {
             myAnswer = data.get("myAnswer");
             try {
                 questionId = Integer.valueOf(data.get("questionId"));
-                isCorrect = Boolean.parseBoolean(data.get("isCorrect"));
             } catch (NumberFormatException e) {
                 resp.put("is_successful", false);
-                resp.put("error_message", "questionId或isCorrect格式存在问题！");
+                resp.put("error_message", "请确保questionId可转为Int！");
                 return JSON.toJSONString(resp);
             }
+            isCorrect = data.get("isCorrect").equals("true") || data.get("isCorrect").equals("1");
+            System.out.println("isCorrect is " + isCorrect);
             if (questionsMapper.selectById(questionId) == null) {
                 resp.put("is_successful", false);
                 resp.put("error_message", "未找到该id！");
@@ -78,14 +72,6 @@ public class AdaptivePracticeServiceImpl implements AdaptivePracticeService {
             UpdateWrapper<Chapter> updateWrapperChapter = new UpdateWrapper<>();
             updateWrapperQuestions.eq("id", questionId);
             updateWrapperChapter.eq("id", chapterId);
-//            if (isCorrect) {
-//                updateWrapperQuestions.set("correct_count", questionsMapper.selectById(questionId).getCorrectCount() + 1);
-//                if (chapterMapper.selectById(chapterId).getPracticeHardValue() == 2) updateWrapperChapter.set("practice_hard_value", 3);
-//            }
-//            else {
-//                updateWrapperQuestions.set("incorrect_count", questionsMapper.selectById(questionId).getIncorrectCount() + 1);
-//                if (chapterMapper.selectById(chapterId).getPracticeHardValue() == 2) updateWrapperChapter.set("practice_hard_value", 1);
-//            }
             updateWrapperQuestions.set("my_answer", myAnswer);
             Integer oldPracticeHardValue = chapterMapper.selectById(chapterId).getPracticeHardValue();
             if (isCorrect) {
@@ -104,6 +90,12 @@ public class AdaptivePracticeServiceImpl implements AdaptivePracticeService {
             }
             questionsMapper.update(updateWrapperQuestions);
         } else practicedQuestionsIdList.clear();
+
+        System.out.print("当前已过的练习题目链表：");
+        for (Integer question_id : practicedQuestionsIdList) {
+            System.out.print(question_id     + " ");
+        }
+        System.out.println();
 
         Integer curPracticeHardValue = chapterMapper.selectById(chapterId).getPracticeHardValue();
         QueryWrapper<Questions> queryWrapperQuestions = new QueryWrapper<>();
