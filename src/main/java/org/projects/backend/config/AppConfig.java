@@ -10,4 +10,7 @@ public class AppConfig {
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
+    public String test() {
+        return "test_successful";
+    }
 }

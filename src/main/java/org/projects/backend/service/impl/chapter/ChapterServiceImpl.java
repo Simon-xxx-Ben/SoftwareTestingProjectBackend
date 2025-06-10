@@ -222,4 +222,9 @@ public class ChapterServiceImpl implements ChapterService {
         resp.put("error_message", "Congratulations! Success!");
         return resp;
     }
+
+    @Override
+    public String test() {
+        return "test_successful";
+    }
 }

@@ -17,4 +17,5 @@ public interface QuestionsService {
     String deleteQuestionById(String id);
     JSONObject updateQuestionById(Map<String, String> data);
     JSONObject updateCorrectOrIncorrectCount(Map<String, String> data);
+    String test();
 }

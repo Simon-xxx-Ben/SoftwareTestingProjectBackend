@@ -17,4 +17,5 @@ public interface ExamsService {
     JSONObject updateExamById(Map<String, String> data);
     JSONObject setExamScoreById(Map<String, String> data);
     String getAllExamsClassification();
+    String test();
 }

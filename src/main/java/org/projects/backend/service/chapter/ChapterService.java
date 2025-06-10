@@ -12,4 +12,5 @@ public interface ChapterService {
     JSONObject insertChapter(Map<String, String> data);
     JSONObject deleteChapterById(Map<String, String> data);
     JSONObject updateChapterById(Map<String, String> data);
+    String test();
 }

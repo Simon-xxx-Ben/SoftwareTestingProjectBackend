@@ -139,4 +139,9 @@ public class ExamsServiceImpl implements ExamsService {
 //        return resp;
         return JSON.toJSONString(examsList);
     }
+
+    @Override
+    public String test() {
+        return "test_successful";
+    }
 }

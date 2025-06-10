@@ -208,16 +208,22 @@ public class QuestionsServiceImpl implements QuestionsService {
     public String deleteQuestionById(String id) {
         JSONObject resp = new JSONObject();
         Integer questionId;
+        questionId = Integer.parseInt(id);
         try {
             questionId = Integer.parseInt(id);
         } catch (Exception e) {
             resp.put("is_successful", false);
-            resp.put("error_message", "没找到该id！");
+            resp.put("error_message", "id不可转为Int！");
             return JSON.toJSONString(resp);
         }
         if (questionsMapper.selectById(questionId) == null) {
             resp.put("is_successful", false);
             resp.put("error_message", "没找到该id！");
+            return JSON.toJSONString(resp);
+        }
+        if (!questionsMapper.selectById(questionId).getIsWrong()) {
+            resp.put("is_successful", false);
+            resp.put("error_message", "该题目非错题！");
             return JSON.toJSONString(resp);
         }
         UpdateWrapper<Questions> updateWrapper = new UpdateWrapper<>();
@@ -271,5 +277,10 @@ public class QuestionsServiceImpl implements QuestionsService {
         resp.put("is_successful", true);
         resp.put("error_message", "Congratulations! Success!");
         return resp;
+    }
+
+    @Override
+    public String test() {
+        return "test_successful";
     }
 }
