@@ -109,7 +109,8 @@ public class AdaptivePracticeServiceImpl implements AdaptivePracticeService {
 //            resp.put("is_successful", false);
 //            resp.put("error_message", "没有题目了！");
 //            return JSON.toJSONString(resp);
-            return new JSONObject();
+//            return new JSONObject();
+            return JSON.toJSONString(new JSONObject());
         } else {
             practicedQuestionsIdList.add(question.getId());
             resp.put("id", question.getId());
