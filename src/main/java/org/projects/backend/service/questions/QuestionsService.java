@@ -14,7 +14,7 @@ public interface QuestionsService {
     JSONObject getQuestionHardValueListByChapterId(Map<String, String> data);
     String getWrongQuestionsList(Map<String, String> data);
     JSONObject insertQuestionById(Map<String, String> data);
-    JSONObject deleteQuestionById(Integer id);
+    String deleteQuestionById(String id);
     JSONObject updateQuestionById(Map<String, String> data);
     JSONObject updateCorrectOrIncorrectCount(Map<String, String> data);
 }

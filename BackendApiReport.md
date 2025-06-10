@@ -101,7 +101,18 @@
 
 ### 根据id删除指定题目
 
-暂时不写，先跳过
+函数位置【`service.impl.questions.QuestionsServiceImpl.getWrongQuestionsList()`】
+
+输入参数：题目ID`String id`
+
+输出结果：序列化后的字符串，存有是否成功和错误信息两个字段
+
+> 【用例编写参考】
+>
+> 已完成的异常数据捕捉：
+>
+> 1. id不可转为Int（字符（串）、double类型）
+> 2. 数据库中不存在指定id的题目
 
 ### 推荐某个id相关的题目列表
 

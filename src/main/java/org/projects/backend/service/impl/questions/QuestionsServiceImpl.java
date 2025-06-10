@@ -205,20 +205,28 @@ public class QuestionsServiceImpl implements QuestionsService {
     }
 
     @Override
-    public JSONObject deleteQuestionById(Integer id) {
+    public String deleteQuestionById(String id) {
         JSONObject resp = new JSONObject();
-        if (questionsMapper.selectById(id) == null) {
+        Integer questionId;
+        try {
+            questionId = Integer.parseInt(id);
+        } catch (Exception e) {
             resp.put("is_successful", false);
             resp.put("error_message", "没找到该id！");
-            return resp;
+            return JSON.toJSONString(resp);
+        }
+        if (questionsMapper.selectById(questionId) == null) {
+            resp.put("is_successful", false);
+            resp.put("error_message", "没找到该id！");
+            return JSON.toJSONString(resp);
         }
         UpdateWrapper<Questions> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("id", id)
+        updateWrapper.eq("id", questionId)
                         .set("is_wrong", 0);
         questionsMapper.update(updateWrapper);
         resp.put("is_successful", true);
         resp.put("error_message", "Congratulations! Success!");
-        return resp;
+        return JSON.toJSONString(resp);
     }
 
     @Override

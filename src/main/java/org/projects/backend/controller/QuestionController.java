@@ -63,7 +63,7 @@ public class QuestionController {
     }
 
     @DeleteMapping("wrong-questions/{id}")
-    public JSONObject deleteWrongQuestion(@PathVariable int id) {
+    public JSONObject deleteWrongQuestion(@PathVariable String id) {
         return questionsService.deleteQuestionById(id);
     }
 }
