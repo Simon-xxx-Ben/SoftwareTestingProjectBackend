@@ -14,6 +14,7 @@ public class Questions {
     private Integer id;
     private String chapterId;
     private String content;
+    private String options;
     private String explanation;
     private String answer;
     private Double scoreValue;
@@ -23,4 +24,5 @@ public class Questions {
     private Integer incorrectCount;
     private Boolean isWrong;
     private Integer questionType;
+    private String recommendQuestionsList;
 }

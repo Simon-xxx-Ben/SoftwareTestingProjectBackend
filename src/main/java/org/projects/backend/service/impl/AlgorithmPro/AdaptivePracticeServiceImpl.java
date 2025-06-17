@@ -12,10 +12,7 @@ import org.projects.backend.service.AlgorithmPro.AdaptivePracticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class AdaptivePracticeServiceImpl implements AdaptivePracticeService {
@@ -106,10 +103,6 @@ public class AdaptivePracticeServiceImpl implements AdaptivePracticeService {
         if (!practicedQuestionsIdList.isEmpty()) queryWrapperQuestions.notIn("id", practicedQuestionsIdList);
         Questions question = questionsMapper.selectOne(queryWrapperQuestions);
         if (question == null) {
-//            resp.put("is_successful", false);
-//            resp.put("error_message", "没有题目了！");
-//            return JSON.toJSONString(resp);
-//            return new JSONObject();
             return JSON.toJSONString(new JSONObject());
         } else {
             practicedQuestionsIdList.add(question.getId());
@@ -121,10 +114,21 @@ public class AdaptivePracticeServiceImpl implements AdaptivePracticeService {
             else if (question.getQuestionType() == 2) resp.put("questionType", "TRUE_FALSE");
             else if (question.getQuestionType() == 3) resp.put("questionType", "FILL_IN_THE_BLANK");
             else if (question.getQuestionType() == 4) resp.put("questionType", "SHORT_ANSWER");
-            resp.put("correctAnswer", question.getAnswer());
             resp.put("myAnswer", question.getMyAnswer());
             resp.put("explanation", question.getExplanation());
             resp.put("isCorrect", !question.getIsWrong());
+            if (question.getQuestionType() == 0 || question.getQuestionType() == 1) {
+                //        选项
+                String[] options = question.getOptions().split(",");
+                List<String> optionList = new LinkedList<>();
+                for ( String option : options ) optionList.add(option.trim());
+                resp.put("options", optionList);
+                //        标准答案
+                String[] answers = question.getAnswer().split(",");
+                List<String> answerList = new LinkedList<>();
+                for ( String answer : answers ) answerList.add(answer.trim());
+                resp.put("correctAnswer", answerList.toString());
+            } else resp.put("correctAnswer", question.getAnswer());
             return JSON.toJSONString(resp);
         }
     }

@@ -12,6 +12,7 @@ import org.projects.backend.service.questions.QuestionsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -30,13 +31,11 @@ public class QuestionsServiceImpl implements QuestionsService {
     @Override
     public String getQuestionById(Map<String, String> data) {
         JSONObject resp = new JSONObject();
-//        JSONObject question = new JSONObject();
         if (!data.containsKey("id")){
             resp.put("is_successful", false);
             resp.put("error_message", "请保证存在id属性！");
             return JSON.toJSONString(resp);
         }
-//        System.out.println(data.get("id"));
         QueryWrapper<Questions> queryWrapper = new QueryWrapper<>();
         Integer id;
         try {
@@ -54,25 +53,8 @@ public class QuestionsServiceImpl implements QuestionsService {
             resp.put("error_message", "没有找到该id！");
             return JSON.toJSONString(resp);
         }
-//        question.put("id", question_temp.getId());
-////        question.put("hardValue", question_temp.getHardValue());
-//        question.put("difficulty", question_temp.getHardValue());
-//        question.put("content", question_temp.getContent());
-//        if (question_temp.getQuestionType() == 0) question.put("questionType", "SINGLE_CHOICE");
-//        else if (question_temp.getQuestionType() == 1)question.put("questionType", "MULTIPLE_CHOICE");
-//        else if (question_temp.getQuestionType() == 2) question.put("questionType", "TRUE_FALSE");
-//        else if (question_temp.getQuestionType() == 3)question.put("questionType", "FILL_IN_THE_BLANK");
-//        else if (question_temp.getQuestionType() == 4) question.put("questionType", "SHORT_ANSWER");
-//        question.put("correctAnswer", question_temp.getAnswer());
-//        question.put("myAnswer", question_temp.getMyAnswer());
-//        question.put("explanation", question_temp.getExplanation());
-//        resp.put("question", question);
-//        resp.put("is_successful", true);
-//        resp.put("error_message", "Congratulations! Success!");
 
         resp.put("id", question_temp.getId());
-//        resp.put("hardValue", question_temp.getHardValue());
-//        resp.put("scoreValue", question_temp.getScoreValue());
         resp.put("difficulty", question_temp.getHardValue());
         resp.put("content", question_temp.getContent());
         if (question_temp.getQuestionType() == 0) resp.put("questionType", "SINGLE_CHOICE");
@@ -80,10 +62,21 @@ public class QuestionsServiceImpl implements QuestionsService {
         else if (question_temp.getQuestionType() == 2) resp.put("questionType", "TRUE_FALSE");
         else if (question_temp.getQuestionType() == 3) resp.put("questionType", "FILL_IN_THE_BLANK");
         else if (question_temp.getQuestionType() == 4) resp.put("questionType", "SHORT_ANSWER");
-        resp.put("correctAnswer", question_temp.getAnswer());
         resp.put("myAnswer", question_temp.getMyAnswer());
         resp.put("explanation", question_temp.getExplanation());
         resp.put("isCorrect", !question_temp.getIsWrong());
+        if (question_temp.getQuestionType() == 0 || question_temp.getQuestionType() == 1) {
+            //        选项
+            String[] options = question_temp.getOptions().split(",");
+            List<String> optionList = new LinkedList<>();
+            for ( String option : options ) optionList.add(option.trim());
+            resp.put("options", optionList);
+            //        标准答案
+            String[] answers = question_temp.getAnswer().split(",");
+            List<String> answerList = new LinkedList<>();
+            for ( String answer : answers ) answerList.add(answer.trim());
+            resp.put("correctAnswer", answerList.toString());
+        } else resp.put("correctAnswer", question_temp.getAnswer());
         return JSON.toJSONString(resp);
     }
 
@@ -174,8 +167,6 @@ public class QuestionsServiceImpl implements QuestionsService {
             resp.put("error_message", "pageSize格式错误，请确保pageSize能够转为Int！");
             return JSON.toJSONString(resp);
         }
-//        pageNo = Integer.parseInt(data.get("pageNo"));
-//        pageSize = Integer.parseInt(data.get("pageSize"));
         System.out.println(pageNo + " " + pageSize);
         IPage<Questions> page = new Page<>(pageNo, pageSize);
         QueryWrapper<Questions> queryWrapper = new QueryWrapper<>();
@@ -189,13 +180,8 @@ public class QuestionsServiceImpl implements QuestionsService {
             wrongQuestion.put("content", wrong_question.getContent());
             wrongQuestion.put("myAnswer", wrong_question.getMyAnswer());
             wrongQuestion.put("correctAnswer", wrong_question.getAnswer());
-//            System.out.println(wrong_question.getId());
             wrongQuestionsList.add(wrongQuestion);
         }
-//        resp.put("wrongQuestionsList", JSON.toJSON(wrongQuestionsList));
-//        resp.put("is_successful", true);
-//        resp.put("error_message", "Congratulations! Success!");
-//        return resp;
         return JSON.toJSONString(wrongQuestionsList);
     }
 
@@ -208,7 +194,6 @@ public class QuestionsServiceImpl implements QuestionsService {
     public String deleteQuestionById(String id) {
         JSONObject resp = new JSONObject();
         Integer questionId;
-        questionId = Integer.parseInt(id);
         try {
             questionId = Integer.parseInt(id);
         } catch (Exception e) {
@@ -256,23 +241,29 @@ public class QuestionsServiceImpl implements QuestionsService {
             resp.put("error_message", "id格式错误，请确保id能够转为Int！");
             return resp;
         }
-        Questions question_temp = questionsMapper.selectById(id);
-        if (question_temp == null) {
+        boolean isCorrect;
+        try {
+            isCorrect = Boolean.parseBoolean(data.get("isCorrect"));
+        } catch (Exception e) {
+            resp.put("is_successful", false);
+            resp.put("error_message", "id格式错误，请确保id能够转为Int！");
+            return resp;
+        }
+        Questions question = questionsMapper.selectById(id);
+        if (question == null) {
             resp.put("is_successful", false);
             resp.put("error_message", "没有找到该id！");
             return resp;
         }
-        String myAnswer_temp = data.get("myAnswer");
-        Questions question = questionsMapper.selectById(id);
         UpdateWrapper<Questions> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("id", id);
-        if (myAnswer_temp.equals(question.getAnswer())) {
+        updateWrapper.set("my_answer", data.get("myAnswer"));
+        if (isCorrect) {
             updateWrapper.set("correct_count", (question.getCorrectCount() + 1));
         } else {
             updateWrapper.set("incorrect_count", (question.getIncorrectCount() + 1));
             updateWrapper.set("is_wrong", true);
         }
-        updateWrapper.set("my_answer", myAnswer_temp);
         questionsMapper.update(question, updateWrapper);
         resp.put("is_successful", true);
         resp.put("error_message", "Congratulations! Success!");

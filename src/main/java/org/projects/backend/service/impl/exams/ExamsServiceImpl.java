@@ -128,7 +128,7 @@ public class ExamsServiceImpl implements ExamsService {
             List<ExamQuestion> examQuestionList = examQuestionMapper.selectList(queryWrapper);
             List<Integer> examQuestionIdList = new LinkedList<>();
             for (ExamQuestion examQuestion : examQuestionList) {
-                examQuestionIdList.add(examQuestion.getId());
+                examQuestionIdList.add(examQuestion.getQuestionId());
             }
             exam_temp.put("questionList", examQuestionIdList);
             examsList.add(exam_temp);

@@ -37,8 +37,10 @@ public class QuestionController {
         Map<String, String> data = new HashMap<>();
         data.put("id", String.valueOf(id));
         data.put("myAnswer", jsonObject.getString("answer"));
-        System.out.println(jsonObject.getString("answer"));
+        data.put("isCorrect", jsonObject.getString("isCorrect"));
         System.out.println(id);
+        System.out.println(jsonObject.getString("answer"));
+        System.out.println(jsonObject.getString("isCorrect"));
         return questionsService.updateCorrectOrIncorrectCount(data);
     }
 

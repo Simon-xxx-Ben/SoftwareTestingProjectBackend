@@ -1,5 +1,6 @@
 package org.projects.backend.pojo;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,8 +10,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ExamQuestion {
-    @TableId(type = IdType.AUTO)
-    private Integer id;
-    private Integer exam_id;
-    private Integer question_id;
+//    @TableId(type = IdType.AUTO)
+//    private Integer id;
+    @TableField
+    private Integer examId;
+    @TableField
+    private Integer questionId;
 }

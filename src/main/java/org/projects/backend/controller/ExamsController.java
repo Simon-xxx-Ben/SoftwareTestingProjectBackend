@@ -36,6 +36,12 @@ public class ExamsController {
     public JSONObject setExamScoreById(@PathVariable int id, @RequestBody JSONObject jsonObject) {
         Map<String, String> data = new HashMap<>();
         data.put("id", String.valueOf(id));
+        if (!jsonObject.containsKey("score")) {
+            JSONObject error = new JSONObject();
+            error.put("is_successful", false);
+            error.put("error_message", "请保证存在score属性！");
+            return error;
+        }
         data.put("score", String.valueOf(jsonObject.get("score")));
         return examsService.setExamScoreById(data);
     }
