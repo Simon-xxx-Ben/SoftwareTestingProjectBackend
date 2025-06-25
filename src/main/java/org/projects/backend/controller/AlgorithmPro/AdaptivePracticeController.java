@@ -26,8 +26,6 @@ public class AdaptivePracticeController {
         Map<String, String> data = new HashMap<>();
         data.put("chapterId", chap_id);
         if (jsonObject.containsKey("answer")) data.put("myAnswer", jsonObject.getString("answer"));
-//        if (jsonObject.containsKey("questionId")) data.put("questionId", String.valueOf(jsonObject.getInteger("questionId")));
-//        if (jsonObject.containsKey("isCorrect")) data.put("isCorrect", String.valueOf(jsonObject.getBoolean("isCorrect")));
         if (jsonObject.containsKey("questionId")) data.put("questionId", String.valueOf(jsonObject.get("questionId")));
         if (jsonObject.containsKey("isCorrect")) data.put("isCorrect", String.valueOf(jsonObject.get("isCorrect")));
         System.out.println(chap_id);

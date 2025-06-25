@@ -133,10 +133,6 @@ public class ExamsServiceImpl implements ExamsService {
             exam_temp.put("questionList", examQuestionIdList);
             examsList.add(exam_temp);
         }
-//        resp.put("examsList", JSON.toJSON(examsList));
-//        resp.put("is_successful", true);
-//        resp.put("error_message", "Congratulations! Success!");
-//        return resp;
         return JSON.toJSONString(examsList);
     }
 

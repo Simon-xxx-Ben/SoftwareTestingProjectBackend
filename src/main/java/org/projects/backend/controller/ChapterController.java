@@ -14,11 +14,6 @@ public class ChapterController {
     @Autowired
     private ChapterService chapterService;
 
-//    @GetMapping("/api/chapter/get_all/")
-//    public String getAllChapters() {
-//        return chapterService.getAllChapters();
-//    }
-
     @GetMapping("practices")
     public String getAllChapters() {
         return chapterService.getAllChapters();

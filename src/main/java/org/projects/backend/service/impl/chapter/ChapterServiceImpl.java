@@ -75,14 +75,6 @@ public class ChapterServiceImpl implements ChapterService {
     public JSONObject getChapterById(Map<String, String> data) {
         JSONObject resp = new JSONObject();
         JSONObject item = new JSONObject();
-//        Integer id;
-//        try {
-//            id = Integer.parseInt(data.get("id"));
-//        }catch (Exception e) {
-//            resp.put("is_successful", false);
-//            resp.put("error_message", "id格式错误，请确保id非空且能够转为Int！");
-//            return resp;
-//        }
         String id = data.get("id");
         QueryWrapper<Chapter> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("id", id);
@@ -147,14 +139,6 @@ public class ChapterServiceImpl implements ChapterService {
     @Override
     public JSONObject deleteChapterById(Map<String, String> data) {
         JSONObject resp = new JSONObject();
-//        Integer id;
-//        try {
-//            id = Integer.parseInt(data.get("id"));
-//        }catch (Exception e) {
-//            resp.put("is_successful", false);
-//            resp.put("error_message", "id格式错误，请确保id非空且能够转为Int！");
-//            return resp;
-//        }
         String id = data.get("id");
         int check = chapterMapper.deleteById(id);
         if (check == 1) {
@@ -171,21 +155,6 @@ public class ChapterServiceImpl implements ChapterService {
     public JSONObject updateChapterById(Map<String, String> data) {
         JSONObject resp = new JSONObject();
         Chapter chapter = new Chapter();
-//        Integer id;
-//        if (data.containsKey("id")) {
-//            try {
-//                id = Integer.parseInt(data.get("id"));
-//                chapter.setId(id);
-//            }catch (Exception e) {
-//                resp.put("is_successful", false);
-//                resp.put("error_message", "id格式错误，请确保id非空且能够转为Int！");
-//                return resp;
-//            }
-//        } else {
-//            resp.put("is_successful", false);
-//            resp.put("error_message", "id不能为空！");
-//            return resp;
-//        }
         String id;
         if (data.containsKey("id")) id = data.get("id");
         else {

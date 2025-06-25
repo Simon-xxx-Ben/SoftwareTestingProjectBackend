@@ -17,20 +17,10 @@ public class ExamsController {
     @Autowired
     private ExamsService examsService;
 
-//    @GetMapping("/api/exams/get_all_classification/")
-//    public JSONObject getAllExamsClassification() {
-//        return examsService.getAllExamsClassification();
-//    }
-
     @GetMapping("exams")
     public String getAllExamsClassification() {
         return examsService.getAllExamsClassification();
     }
-
-//    @PostMapping("/api/exams/set_one_score/")
-//    public JSONObject setExamScoreById(@RequestParam Map<String, String> data) {
-//        return examsService.setExamScoreById(data);
-//    }
 
     @PostMapping("exams/{id}/submit")
     public JSONObject setExamScoreById(@PathVariable int id, @RequestBody JSONObject jsonObject) {

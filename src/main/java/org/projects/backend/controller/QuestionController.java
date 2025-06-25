@@ -15,22 +15,12 @@ public class QuestionController {
     @Autowired
     QuestionsService questionsService;
 
-//    @GetMapping("/api/questions/get_one_by_id/")
-//    public JSONObject getQuestionById(@RequestParam Map<String, String> data) {
-//        return questionsService.getQuestionById(data);
-//    }
-
     @GetMapping("question/{id}")
     public String getQuestionById(@PathVariable Integer id) {
         Map<String, String> data = new HashMap<>();
         data.put("id", String.valueOf(id));
         return questionsService.getQuestionById(data);
     }
-
-//    @PostMapping("/api/questions/set_one_correct_or_incorrect_count/")
-//    public JSONObject updateCorrectOrIncorrectCount(@RequestParam Map<String, String> data) {
-//        return questionsService.updateCorrectOrIncorrectCount(data);
-//    }
 
     @PostMapping("question/{id}/submit")
     public JSONObject updateCorrectOrIncorrectCount(@PathVariable int id, @RequestBody JSONObject jsonObject) {

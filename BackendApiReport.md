@@ -144,7 +144,7 @@
 
 `@GetMapping("chart/mastery-degree")`
 
-输入参数：无
+输入参数：无q
 
 输出参数：字符串，若正确返回则是以`https://mdn.alipayobjects.com/`开头的字符串，否则为空字符串
 
